@@ -5,6 +5,9 @@ from langchain_core.messages import AIMessage, HumanMessage
 import requests
 import pandas as pd
 import google.generativeai as genai
+import entsoeController as entsoe
+import matplotlib.pyplot as plt
+from entsoe import EntsoePandasClient
 
 # Initialize Google Gemini API
 GOOGLE_API_KEY = 'AIzaSyBJiitah4ELmIRv4G1CLtAk2LmxcTrbQAw'  # Insert your actual Google API key here
@@ -182,7 +185,7 @@ def handle_input(user_input):
     return ai_response_text
 
 # Create tabs for different views
-tab1, tab2, tab3, tab4 = st.tabs(["💬 Chat", "🌤️ Weather Data", "⚙️ Settings", "📖 Instructions"])
+tab1, tab2, tab3, tab4, tab5 = st.tabs(["💬 Chat", "🌤️ Weather Data", "⚙️ Settings", "📖 Instructions", "Energy Prices"])
 
 with tab1:
     st.header("Chat with Gemini AI")
@@ -350,6 +353,47 @@ pip install google-generativeai streamlit streamlit-chat langchain-core pandas r
     - **Model errors?** Try different Gemini model names in the code
     - **Regional issues?** Some APIs may not be available in all regions
     """)
+
+with tab5:
+    # use the entsoeController to fetch energy prices
+    st.header("💡 Energy Prices")
+    st.markdown("""
+    This tab will display energy prices using the `entsoeController` module.
+    Make sure you have the `entsoe` package installed and configured with your API key.
+    """)
+    if 'entsoe_prices' not in st.session_state:
+        st.session_state.entsoe_prices = None
+    if st.button("Fetch Energy Prices"):
+        try:
+            # Fetch energy prices using the entsoeController
+            start = pd.Timestamp('20250601', tz='Europe/Brussels')
+            end = pd.Timestamp('20250602', tz='Europe/Brussels')
+            country_codes = ["SE_3", "SE_4"]
+            
+            dfs = []
+            for country_code in country_codes:
+                df = entsoe.get_day_ahead_prices(country_code, start=start, end=end)
+                df.name = country_code
+                dfs.append(df)
+            
+            combined_df = pd.concat(dfs, axis=1)
+            st.session_state.entsoe_prices = combined_df
+            
+            st.success("✅ Energy prices fetched successfully!")
+            st.dataframe(combined_df, use_container_width=True)
+            # visualize the prices
+            fig, ax = plt.subplots(figsize=(10, 5))
+            combined_df.plot(ax=ax, title='Day Ahead Prices', ylabel='EUR/MWh', xlabel='Time')
+            st.pyplot(fig)
+        except Exception as e:
+            st.error(f"❌ Error fetching energy prices: {e}")
+    else:
+        if st.session_state.entsoe_prices is not None:
+            st.success("✅ Energy prices loaded from previous fetch!")
+            st.dataframe(st.session_state.entsoe_prices, use_container_width=True)
+        else:
+            st.info("Click the button above to fetch energy prices.")
+# Streamlit app for AI Assistant with Weather Data and Energy Prices
 
 # Footer
 st.markdown("""
