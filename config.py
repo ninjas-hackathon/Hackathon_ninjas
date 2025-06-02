@@ -3,17 +3,18 @@ import google.generativeai as genai
 
 # API Keys
 GOOGLE_API_KEY = 'AIzaSyBJiitah4ELmIRv4G1CLtAk2LmxcTrbQAw'  # Insert your actual Google API key here
-WEATHER_API_KEY = 'CBzCpmJBH5PzBr8AmQcS43TnfRGRCukE2v4tIkm9smE'  # Insert your actual Rebase Energy API key
+WEATHER_API_KEY = 'q1XdYSQwrujtCGDkQztRkd2cVNuxutzxk1SK81HhI60'  # Insert your actual Rebase Energy API key
 
 # Weather API Configuration
 WEATHER_API_URL = "https://api.rebase.energy/weather/v2/query"
+
 WEATHER_API_PARAMS = {
     'model': 'DWD_ICON-EU',
-    'start-date': '2023-02-01',
-    'end-date': '2023-02-03',
-    'latitude': '60.1, 61.2, 59.33',
-    'longitude': '17.2, 13.1, 18.05',
-    'variables': 'Temperature, WindSpeed',
+    'start-date': '2025-06-02',
+    'end-date': '2025-06-05',
+    "latitude": "59.3293",   # Stockholm
+    "longitude": "18.0686",
+    'variables': 'Temperature, WindSpeed, SolarDownwardRadiation',
     'output-format': 'json',
     'output-schema': 'list'
 }
