@@ -4,6 +4,7 @@ from langchain_core.messages import AIMessage, HumanMessage
 from utils.session_state import get_chat_messages, add_message, clear_chat, get_weather_data
 from utils.ai_helper import generate_ai_response
 from config import GOOGLE_API_KEY
+from utils.session_state import get_energy_prices
 
 def show():
     """Display the chat page"""
@@ -53,13 +54,15 @@ def handle_input(user_input, weather_data):
     # Add user message to session state
     user_message = HumanMessage(content=user_input)
     add_message(user_message)
+    energy_prices = get_energy_prices()  # Placeholder for energy prices if needed
     
     # Generate AI response using Google Gemini API
     messages = get_chat_messages()
     ai_response_text = generate_ai_response(
         user_input, 
         messages, 
-        weather_data if not weather_data.empty else None
+        weather_data,
+        energy_prices  # Placeholder for energy prices if needed
     )
     
     # Add AI message to session state

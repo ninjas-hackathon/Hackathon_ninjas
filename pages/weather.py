@@ -7,22 +7,7 @@ from plotly.subplots import make_subplots
 from datetime import datetime
 from utils.weather_api import fetch_weather_data, display_weather_setup_instructions
 from utils.session_state import get_weather_data, set_weather_data
-
-def create_weather_dataframe(weather_data):
-    """Convert weather JSON data to pandas DataFrame"""
-
-    df = pd.DataFrame(weather_data)
-    
-    # Convert datetime strings to datetime objects
-    df['valid_datetime'] = pd.to_datetime(df['valid_datetime'])
-    df['ref_datetime'] = pd.to_datetime(df['ref_datetime'])
-    
-    # Create a more readable datetime column for display
-    df['DateTime'] = df['valid_datetime'].dt.strftime('%Y-%m-%d %H:%M')
-    df['Date'] = df['valid_datetime'].dt.date
-    df['Hour'] = df['valid_datetime'].dt.hour
-    
-    return df
+from utils.data_processing import create_weather_dataframe
 
 def create_temperature_chart(df):
     """Create temperature time series chart"""
