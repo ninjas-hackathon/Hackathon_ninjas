@@ -19,7 +19,7 @@ def fetch_weather_data():
         
         # Make API request
         response = requests.post(WEATHER_API_URL, headers=headers, data=json.dumps(WEATHER_API_PARAMS))
-        
+        st.write(response.json())  
         return response.json()
         
             

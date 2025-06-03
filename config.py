@@ -10,7 +10,7 @@ WEATHER_API_URL = "https://api.rebase.energy/weather/v2/query"
 
 WEATHER_API_PARAMS = {
     'model': 'DWD_ICON-EU',
-    'start-date': '2025-06-02',
+    'start-date': '2025-06-03',
     'end-date': '2025-06-05',
     "latitude": "59.3293",   # Stockholm
     "longitude": "18.0686",

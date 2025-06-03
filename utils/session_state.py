@@ -14,6 +14,8 @@ def initialize_session_state():
 
 def get_chat_messages():
     """Get chat messages from session state"""
+    if "messages" not in st.session_state:
+        st.session_state.messages = []
     return st.session_state.messages
 
 def add_message(message):
@@ -26,6 +28,8 @@ def clear_chat():
 
 def get_weather_data():
     """Get weather data from session state"""
+    if "weather_data" not in st.session_state:
+        st.session_state.weather_data = pd.DataFrame()
     return st.session_state.weather_data
 
 def set_weather_data(data):
@@ -34,6 +38,8 @@ def set_weather_data(data):
 
 def get_energy_prices():
     """Get energy prices from session state"""
+    if "entsoe_prices" not in st.session_state:
+        st.session_state.entsoe_prices = None
     return st.session_state.entsoe_prices
 
 def set_energy_prices(prices):
